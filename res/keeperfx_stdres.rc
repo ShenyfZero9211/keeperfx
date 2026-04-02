@@ -29,7 +29,7 @@ A ICON MOVEABLE PURE LOADONCALL DISCARDABLE "keeperfx_icon.ico"
 CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "../keeperfx.exe.manifest" //Add manifest to declare that keeperfx is "dpiAware"
 
 // Create version info block, using defines from the header file
-1 VERSIONINFO
+2 VERSIONINFO
 FILEVERSION VER_MAJOR,VER_MINOR,VER_RELEASE,VER_BUILD
 PRODUCTVERSION VER_MAJOR,VER_MINOR,VER_RELEASE,VER_BUILD
 FILETYPE VFT_APP

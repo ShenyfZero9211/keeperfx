@@ -99,6 +99,7 @@ enum StartupFlags {
 struct InstallInfo {
   char inst_path[150];
   int lang_id;
+  int speech_lang_id;
 };
 
 extern unsigned short AtmosRepeat;

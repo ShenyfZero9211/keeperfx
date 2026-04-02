@@ -34,6 +34,9 @@ Currently the whole codebase of Dungeon Keeper is remade and all code has been r
 - Additional campaigns, maps, creatures and other content
 - ...
 
+## Custom Features (Secondary Development)
+- **Speech Language Separation**: Allows setting a different language for speech announcer while keeping a different UI language (e.g., English speech on Chinese UI). 
+  - Configured via `SPEECH_LANGUAGE = <LANG_CODE>` in `keeperfx.cfg`.
 
 ## How to play
 
@@ -48,6 +51,14 @@ or [Steam](https://store.steampowered.com/app/1996630/Dungeon_Keeper_Gold/).
 ## Development
 To get started with KeeperFX development, refer to the [Development Guide](https://github.com/dkfans/keeperfx/wiki/Building-KeeperFX) for 
 detailed instructions on setting up a development environment and building KeeperFX from source.
+
+### Building on Windows (32-bit MinGW)
+This version follows the 32-bit architecture. To build successfully, use a **MinGW-w64 (i686)** toolchain with the **Win32 threads** model (e.g., GCC 13.2.0 i686-win32-dwarf).
+1. Map your MinGW path to a volume to avoid space issues: `subst M: "C:\path\to\mingw32"`
+2. Ensure `M:\bin` and `Git\bin` are in your system `PATH`.
+3. Run `mingw32-make -j4 all`.
+
+If you encounter `.rsrc` merge failures, ensure the `VERSIONINFO` ID in `res/keeperfx_stdres.rc` is unique (set to `2` in this fork).
 
 If you wish to discuss development, you can join the [Keeper Klan discord](https://discord.gg/hE4p7vy2Hb) and ask to 
 be added to the KeeperFX development channel.

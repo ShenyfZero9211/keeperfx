@@ -419,7 +419,8 @@ void load_sound_banks() {
 	char snd_fname[2048];
 	prepare_file_path_buf(snd_fname, sizeof(snd_fname), FGrp_LrgSound, "sound.dat");
 	// language-specific speech file
-	char * spc_fname = prepare_file_fmtpath(FGrp_LrgSound, "speech_%s.dat", get_language_lwrstr(install_info.lang_id));
+	int s_id = (install_info.speech_lang_id != Lang_Unset) ? install_info.speech_lang_id : install_info.lang_id;
+	char * spc_fname = prepare_file_fmtpath(FGrp_LrgSound, "speech_%s.dat", get_language_lwrstr(s_id));
 	// default speech file
 	if (!LbFileExists(spc_fname)) {
 		spc_fname = prepare_file_path(FGrp_LrgSound, "speech.dat");

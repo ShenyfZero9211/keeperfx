@@ -155,6 +155,7 @@ const struct NamedCommand conf_commands[] = {
   {"FRAMES_PER_SECOND"             , 39},
   {"TAG_MODE_TOGGLING"             , 40},
   {"DEFAULT_TAG_MODE"              , 41},
+  {"SPEECH_LANGUAGE"             , 42},
   {NULL,                   0},
   };
 
@@ -385,6 +386,16 @@ static void load_file_configuration(const char *fname, const char *sname, const 
             break;
           }
           install_info.lang_id = i;
+          break;
+      case 42: // SPEECH_LANGUAGE
+          i = recognize_conf_parameter(buf,&pos,len,lang_type);
+          if (i <= 0)
+          {
+              CONFWRNLOG("Couldn't recognize \"%s\" command parameter in %s file.",
+                COMMAND_TEXT(cmd_num),config_textname);
+            break;
+          }
+          install_info.speech_lang_id = i;
           break;
       case 4: // KEYBOARD
           // Works only in DK Premium
