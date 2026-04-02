@@ -206,9 +206,9 @@ int load_game_chunks(TbFileHandle fhandle, struct CatalogueEntry *centry)
         case SGC_GameOrig:
             if (hdr.len != sizeof(struct Game))
             {
+                WARNLOG("Incompatible GameOrig chunk size: save %d, current %d", (int)hdr.len, (int)sizeof(struct Game));
                 if (LbFileSeek(fhandle, hdr.len, Lb_FILE_SEEK_CURRENT) < 0)
                     LbFileSeek(fhandle, 0, Lb_FILE_SEEK_END);
-                WARNLOG("Incompatible GameOrig chunk");
                 break;
             }
             if (LbFileRead(fhandle, &game, sizeof(struct Game)) == sizeof(struct Game)) {
@@ -494,12 +494,26 @@ TbBool save_catalogue_slot_disable(unsigned int slot_idx)
 TbBool load_catalogue_entry(TbFileHandle fh,struct FileChunkHeader *hdr,struct CatalogueEntry *centry)
 {
     clear_flag(centry->flags, CEF_InUse);
-    if ((hdr->id == SGC_InfoBlock) && (hdr->len == sizeof(struct CatalogueEntry)))
+    if (hdr->id == SGC_InfoBlock)
     {
-        if (LbFileRead(fh, centry, sizeof(struct CatalogueEntry))
-          == sizeof(struct CatalogueEntry))
+        if (hdr->len == sizeof(struct CatalogueEntry))
         {
-            set_flag(centry->flags, CEF_InUse);
+            if (LbFileRead(fh, centry, sizeof(struct CatalogueEntry))
+              == sizeof(struct CatalogueEntry))
+            {
+                set_flag(centry->flags, CEF_InUse);
+            }
+        } else if (hdr->len == 397)
+        {
+            // Support legacy 397-byte format
+            WARNLOG("Reading legacy 397-byte CatalogueEntry chunk");
+            memset(centry, 0, sizeof(struct CatalogueEntry));
+            if (LbFileRead(fh, centry, 397) == 397)
+            {
+                set_flag(centry->flags, CEF_InUse);
+            }
+        } else {
+            WARNLOG("Incompatible CatalogueEntry chunk size: save %d, current %d", (int)hdr->len, (int)sizeof(struct CatalogueEntry));
         }
     }
     centry->textname[SAVE_TEXTNAME_LEN-1] = '\0';
